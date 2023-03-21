@@ -3,7 +3,7 @@ extends CharacterBody2D
 ## Also manages player stats, such as strength or money.
 
 ## The player's base stats. Affects damage, move speed, etc.
-@export_group("Base stats")
+@export_group("Base Stats")
 @export var base_speed: int = 10
 @export var base_strength: int = 10
 @export var base_defense: int = 4
@@ -41,7 +41,6 @@ var _timer_invulnerability = 0
 
 @onready var _interactable_range = $InteractableRange
 @onready var _anim_player = $AnimationPlayer
-
 
 func _input(event):
 	if _can_act:
