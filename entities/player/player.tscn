@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://drdtqbgp1eiky"]
+[gd_scene load_steps=7 format=3 uid="uid://drdtqbgp1eiky"]
 
 [ext_resource type="Texture2D" uid="uid://i3u6kxpc4eyj" path="res://entities/player/player.png" id="1_ir6pm"]
 [ext_resource type="Script" path="res://entities/player/player_controller.gd" id="1_k8i8j"]
@@ -7,6 +7,40 @@
 size = Vector2(17, 22)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0p5us"]
+
+[sub_resource type="Animation" id="Animation_aats3"]
+resource_name = "player_roll"
+length = 0.55
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(50, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ihbmm"]
+_data = {
+"player_roll": SubResource("Animation_aats3")
+}
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_k8i8j")
@@ -27,3 +61,8 @@ collision_mask = 64
 [node name="Shape" type="CollisionShape2D" parent="InteractableRange"]
 scale = Vector2(4.27999, 3.99621)
 shape = SubResource("CircleShape2D_0p5us")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ihbmm")
+}
