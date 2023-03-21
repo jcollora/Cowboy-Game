@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://b11klinio8k5g"]
+[gd_scene load_steps=5 format=3 uid="uid://b11klinio8k5g"]
 
 [ext_resource type="PackedScene" uid="uid://drdtqbgp1eiky" path="res://entities/player/player.tscn" id="1_0udeo"]
 [ext_resource type="Texture2D" uid="uid://cdg84sbug2ffn" path="res://levels/test_level/texture_01.png" id="1_luv0d"]
+[ext_resource type="PackedScene" uid="uid://btukejdd1j7x4" path="res://entities/interactables/table/table.tscn" id="2_7ppxe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8r7vg"]
 size = Vector2(50, 20)
@@ -24,4 +25,9 @@ shape = SubResource("RectangleShape2D_8r7vg")
 scale = Vector2(-0.0479992, -0.02)
 texture = ExtResource("1_luv0d")
 
+[node name="Table" parent="." instance=ExtResource("2_7ppxe")]
+position = Vector2(-42, 35)
+scale = Vector2(1.2, 1.2)
+
 [node name="Player" parent="." instance=ExtResource("1_0udeo")]
+position = Vector2(97, 2)

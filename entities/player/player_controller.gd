@@ -3,7 +3,7 @@ extends CharacterBody2D
 ## Also manages player stats, such as strength or money.
 
 ## The player's base stats. Affects damage, move speed, etc.
-@export_group("Base stats")
+@export_group("Base Stats")
 @export var base_speed: int = 10
 @export var base_strength: int = 10
 @export var base_defense: int = 4
@@ -25,7 +25,6 @@ extends CharacterBody2D
 
 @onready var _interactable_range = $InteractableRange
 @onready var _anim_player = $AnimationPlayer
-
 
 func _input(event):
 	if event.is_action_pressed("interact"):
@@ -56,7 +55,7 @@ func _interact():
 			closest_interactable = interactable
 			
 	if closest_interactable != null:
-		closest_interactable.interact()
+		closest_interactable.interact(self)
 
 
 # Roll in the current movement direction, giving invulnerability.
