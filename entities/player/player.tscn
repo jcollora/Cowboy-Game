@@ -1,18 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://drdtqbgp1eiky"]
+[gd_scene load_steps=5 format=3 uid="uid://drdtqbgp1eiky"]
 
 [ext_resource type="Texture2D" uid="uid://i3u6kxpc4eyj" path="res://entities/player/player.png" id="1_ir6pm"]
 [ext_resource type="Script" path="res://entities/player/player_controller.gd" id="1_k8i8j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aq44f"]
-size = Vector2(17, 24)
+size = Vector2(17, 22)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0p5us"]
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_k8i8j")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-4.5, 2)
+[node name="BodyCollider" type="CollisionShape2D" parent="."]
+position = Vector2(-1, -1)
 shape = SubResource("RectangleShape2D_aq44f")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="PlayerSprite" type="Sprite2D" parent="."]
 texture_filter = 1
+position = Vector2(4, -3)
 texture = ExtResource("1_ir6pm")
+
+[node name="InteractableRange" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 64
+
+[node name="Shape" type="CollisionShape2D" parent="InteractableRange"]
+scale = Vector2(4.27999, 3.99621)
+shape = SubResource("CircleShape2D_0p5us")
