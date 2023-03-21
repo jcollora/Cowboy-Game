@@ -11,7 +11,7 @@ extends CharacterBody2D
 @export var base_money: int = 100
 
 ## Multiplier that controls how much the speed stat affects move speed.
-@export var move_speed_multiplier: float = 0.05
+@export var move_speed_multiplier: float = 6
 
 ## Roll distance in pixels.
 @export var roll_distance: float = 50
@@ -37,11 +37,12 @@ func _input(event):
 func _physics_process(delta):
 	_move()
 
-
+	
 # Moves the character in a direction according to input. Acknowledges wall collision.
 func _move():
 	var move_direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	move_and_collide(move_direction + move_direction.normalized() * (speed * move_speed_multiplier))
+	velocity = move_direction * (1 + speed * move_speed_multiplier)
+	move_and_slide()
 
 
 # Interact with the closest nearby interactable
