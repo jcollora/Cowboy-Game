@@ -3,7 +3,7 @@ extends CharacterBody2D
 ## Also manages player stats, such as strength or money.
 
 ## The player's base stats. Affects damage, move speed, etc.
-@export_group("Base Stats")
+@export_group("Base stats")
 @export var base_speed: int = 10
 @export var base_strength: int = 10
 @export var base_defense: int = 4
@@ -41,6 +41,8 @@ var _timer_invulnerability = 0
 
 @onready var _interactable_range = $InteractableRange
 @onready var _anim_player = $AnimationPlayer
+@onready var _gun = $Gun
+
 
 func _input(event):
 	if _can_act:
@@ -48,6 +50,12 @@ func _input(event):
 			_interact()
 		elif event.is_action_pressed("roll"):
 			_start_roll()
+		elif event.is_action_pressed("shoot"):
+			if event is InputEventMouseButton:
+				_gun.shoot(get_local_mouse_position() - position)
+			elif event is InputEventJoypadMotion:
+				_gun.shoot(Input.get_vector("aim_left", "aim_right", "aim_up", 
+						"aim_down").normalized())
 
 
 func _physics_process(delta):
@@ -112,9 +120,7 @@ func _start_roll():
 	# Start the roll movement
 	_is_rolling = true
 	_can_act = false
-	print("cant act")
 	await get_tree().create_timer(roll_time_duration).timeout
-	print("can act")
 	_is_rolling = false
 	_can_act = true
 
@@ -124,8 +130,8 @@ func _roll():
 	velocity = _roll_direction * roll_speed
 	move_and_slide()
 
-
+## Adds projectile invulnerability to player for duration
 func add_invuln(duration: float):
-	print("add invuln")
+	## If invulnerability overlapping, just extend the duration to the given duration
 	if _timer_invulnerability < duration:
 		_timer_invulnerability = duration
