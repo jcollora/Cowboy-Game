@@ -5,14 +5,16 @@ extends CharacterBody2D
 ## The player's base stats. Affects damage, move speed, etc.
 @export_group("Base stats")
 @export var base_speed: int = 10
-@export var base_strength: int = 10
+@export var base_projectile_dmg_multiplier: float = 1
+@export var base_melee_dmg: int = 10
 @export var base_defense: int = 4
-@export var base_health: int = 100
+@export var base_health: float = 100
 @export var base_money: int = 100
 
-## The player's current stats, which start equivalent to their base stats.
+## The player's current stats, which start off equivalent to their base stats.
 @onready var speed = base_speed
-@onready var strength = base_strength
+@onready var projectile_dmg_multiplier = base_projectile_dmg_multiplier
+@onready var melee_dmg = base_melee_dmg
 @onready var defense = base_defense
 @onready var health = base_health
 @onready var money = base_money
@@ -51,11 +53,14 @@ func _input(event):
 		elif event.is_action_pressed("roll"):
 			_start_roll()
 		elif event.is_action_pressed("shoot"):
+			var aim_direction = null
 			if event is InputEventMouseButton:
-				_gun.shoot(get_local_mouse_position() - position)
+				aim_direction = (get_local_mouse_position() - position)
 			elif event is InputEventJoypadMotion:
-				_gun.shoot(Input.get_vector("aim_left", "aim_right", "aim_up", 
-						"aim_down").normalized())
+				aim_direction = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
+			else:
+				return
+			_gun.shoot(projectile_dmg_multiplier, aim_direction.normalized())
 
 
 func _physics_process(delta):
@@ -130,8 +135,21 @@ func _roll():
 	velocity = _roll_direction * roll_speed
 	move_and_slide()
 
+
 ## Adds projectile invulnerability to player for duration
 func add_invuln(duration: float):
 	## If invulnerability overlapping, just extend the duration to the given duration
 	if _timer_invulnerability < duration:
 		_timer_invulnerability = duration
+
+
+## Take given damage but subtract by defense
+func take_damage(damage: float, attacking_player: CharacterBody2D):
+	print("take dmg:", damage - defense)
+	health -= damage - defense
+	if health <= 0:
+		_die()
+
+
+func _die():
+	queue_free()

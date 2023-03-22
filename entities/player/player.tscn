@@ -41,6 +41,7 @@ orbit_velocity_max = 0.0
 color = Color(1, 0.780392, 0, 1)
 
 [node name="Player" type="CharacterBody2D"]
+collision_layer = 2
 script = ExtResource("1_k8i8j")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
