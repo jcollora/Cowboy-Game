@@ -6,3 +6,5 @@ res://levels/test_level/test_level.tscn
 res://entities/projectiles/bullet/bullet.tscn
 res://entities/projectiles/bullet/bullet.gd
 res://entities/player/gun.gd
+res://entities/sandbag/sandbag.tscn
+res://entities/player/melee.gd

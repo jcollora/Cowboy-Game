@@ -2,11 +2,14 @@ extends CharacterBody2D
 ## Reads controller/keyboard input and allows characters to perform actions.
 ## Also manages player stats, such as strength or money.
 
+# Controls whether the player can currently act
+@export var _can_act = true
+
 ## The player's base stats. Affects damage, move speed, etc.
 @export_group("Base stats")
 @export var base_speed: int = 10
 @export var base_projectile_dmg_multiplier: float = 1
-@export var base_melee_dmg: int = 10
+@export var base_melee_dmg_multiplier: float = 1
 @export var base_defense: int = 4
 @export var base_health: float = 100
 @export var base_money: int = 100
@@ -14,7 +17,7 @@ extends CharacterBody2D
 ## The player's current stats, which start off equivalent to their base stats.
 @onready var speed = base_speed
 @onready var projectile_dmg_multiplier = base_projectile_dmg_multiplier
-@onready var melee_dmg = base_melee_dmg
+@onready var melee_dmg_multiplier = base_melee_dmg_multiplier
 @onready var defense = base_defense
 @onready var health = base_health
 @onready var money = base_money
@@ -29,20 +32,17 @@ extends CharacterBody2D
 @export var roll_time_duration: float = 0.6
 @export var roll_time_start_invuln: float = 0.1
 @export var roll_invuln_duration: float = 0.4
-
 var _roll_direction = null
-
-# Controls whether the player can currently act
-var _can_act = true
-
-# Monitors current actions
 var _is_rolling = false
 
 # Timers
 var _timer_invulnerability = 0
 
+# Child references
 @onready var _interactable_range = $InteractableRange
+@onready var _melee = $MeleeHitBox
 @onready var _anim_player = $AnimationPlayer
+@onready var _anim_tree = $AnimationTree
 @onready var _gun = $Gun
 
 
@@ -61,6 +61,10 @@ func _input(event):
 			else:
 				return
 			_gun.shoot(projectile_dmg_multiplier, aim_direction.normalized())
+			_anim_tree["parameters/playback"].start("player_shoot")
+		elif event.is_action_pressed("melee"):
+			_melee.melee(melee_dmg_multiplier)
+			_anim_tree["parameters/playback"].start("player_melee")
 
 
 func _physics_process(delta):
@@ -117,7 +121,7 @@ func _start_roll():
 	var roll_anim = _anim_player.get_animation("player_roll")
 	roll_anim.length = roll_time_duration
 	roll_anim.track_set_key_time(0, 1, roll_time_duration)
-	_anim_player.play("player_roll")
+	_anim_tree["parameters/playback"].start("player_roll")
 	
 	# Give invlun for a time
 	add_invuln(roll_invuln_duration)
@@ -145,7 +149,7 @@ func add_invuln(duration: float):
 
 ## Take given damage but subtract by defense
 func take_damage(damage: float, attacking_player: CharacterBody2D):
-	print("take dmg:", damage - defense)
+	print(name, " took ", damage - defense, " dmg, ", health, " -> ", health - (damage - defense))
 	health -= damage - defense
 	if health <= 0:
 		_die()

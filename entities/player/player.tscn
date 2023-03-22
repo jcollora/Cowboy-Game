@@ -1,13 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://drdtqbgp1eiky"]
+[gd_scene load_steps=30 format=3 uid="uid://bf7jajp11fs5c"]
 
-[ext_resource type="Texture2D" uid="uid://i3u6kxpc4eyj" path="res://entities/player/player.png" id="1_ir6pm"]
 [ext_resource type="Script" path="res://entities/player/player_controller.gd" id="1_k8i8j"]
+[ext_resource type="Texture2D" uid="uid://2xjd6hh508c3" path="res://entities/player/player_roll.png" id="2_rh65h"]
 [ext_resource type="Script" path="res://entities/player/gun.gd" id="3_18o2j"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_aq44f"]
-size = Vector2(17, 22)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_0p5us"]
+[ext_resource type="Texture2D" uid="uid://ceiryl4f856qf" path="res://entities/player/player_melee.png" id="3_foylo"]
+[ext_resource type="Texture2D" uid="uid://i3u6kxpc4eyj" path="res://entities/player/player_idle0.png" id="4_janoa"]
+[ext_resource type="Texture2D" uid="uid://chp410eaahtne" path="res://entities/player/player_idle1.png" id="5_d2kgt"]
+[ext_resource type="Texture2D" uid="uid://b6t36in0jq8fr" path="res://entities/player/player_shoot0.png" id="6_1h6sl"]
+[ext_resource type="Texture2D" uid="uid://b2navfypjblua" path="res://entities/player/player_shoot1.png" id="7_4tvtg"]
+[ext_resource type="Script" path="res://entities/player/melee.gd" id="9_l3l72"]
+[ext_resource type="PackedScene" uid="uid://mfsmoaayy8kp" path="res://entities/projectiles/bullet/bullet.tscn" id="9_pl26a"]
 
 [sub_resource type="Animation" id="Animation_aats3"]
 resource_name = "player_roll"
@@ -23,13 +25,120 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 6.28319]
+"values": [0.0, 1.0472]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_rh65h")]
+}
+
+[sub_resource type="Animation" id="Animation_4d346"]
+resource_name = "player_idle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("4_janoa"), ExtResource("5_d2kgt")]
+}
+
+[sub_resource type="Animation" id="Animation_yf8q1"]
+resource_name = "player_shoot"
+length = 0.1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("6_1h6sl"), ExtResource("7_4tvtg")]
+}
+
+[sub_resource type="Animation" id="Animation_or5cr"]
+resource_name = "player_kick"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_foylo")]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ihbmm"]
 _data = {
-"player_roll": SubResource("Animation_aats3")
+"player_idle": SubResource("Animation_4d346"),
+"player_melee": SubResource("Animation_or5cr"),
+"player_roll": SubResource("Animation_aats3"),
+"player_shoot": SubResource("Animation_yf8q1")
 }
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sogal"]
+animation = &"player_idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_20nbs"]
+animation = &"player_melee"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_63kjs"]
+animation = &"player_roll"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dp50j"]
+animation = &"player_shoot"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yjqo2"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_im752"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k2xeo"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3nm8w"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_sg77y"]
+states/End/position = Vector2(709, 91)
+states/Start/position = Vector2(195, 85)
+states/player_idle/node = SubResource("AnimationNodeAnimation_sogal")
+states/player_idle/position = Vector2(338, 85)
+states/player_melee/node = SubResource("AnimationNodeAnimation_20nbs")
+states/player_melee/position = Vector2(196, 188)
+states/player_roll/node = SubResource("AnimationNodeAnimation_63kjs")
+states/player_roll/position = Vector2(338, 184)
+states/player_shoot/node = SubResource("AnimationNodeAnimation_dp50j")
+states/player_shoot/position = Vector2(488, 184)
+transitions = ["Start", "player_idle", SubResource("AnimationNodeStateMachineTransition_yjqo2"), "player_roll", "player_idle", SubResource("AnimationNodeStateMachineTransition_im752"), "player_shoot", "player_idle", SubResource("AnimationNodeStateMachineTransition_k2xeo"), "player_melee", "player_idle", SubResource("AnimationNodeStateMachineTransition_3nm8w")]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_wu6wg"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pd75g"]
 particle_flag_disable_z = true
@@ -40,14 +149,47 @@ orbit_velocity_min = 0.0
 orbit_velocity_max = 0.0
 color = Color(1, 0.780392, 0, 1)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aq44f"]
+size = Vector2(17, 22)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0p5us"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_671kg"]
+size = Vector2(11, 14)
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
+collision_mask = 7
 script = ExtResource("1_k8i8j")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ihbmm")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_sg77y")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_wu6wg")
 
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(4, -3)
-texture = ExtResource("1_ir6pm")
+texture = ExtResource("4_janoa")
+
+[node name="Gun" type="Node2D" parent="."]
+position = Vector2(19, -1)
+script = ExtResource("3_18o2j")
+_projectile_scene = ExtResource("9_pl26a")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Gun"]
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_pd75g")
+lifetime = 0.1
+one_shot = true
+explosiveness = 1.0
 
 [node name="BodyCollider" type="CollisionShape2D" parent="."]
 visible = false
@@ -63,19 +205,14 @@ collision_mask = 64
 scale = Vector2(4.27999, 3.99621)
 shape = SubResource("CircleShape2D_0p5us")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_ihbmm")
-}
+[node name="MeleeHitBox" type="Area2D" parent="."]
+position = Vector2(-1, 4)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("9_l3l72")
 
-[node name="Gun" type="Node2D" parent="."]
-position = Vector2(19, -1)
-script = ExtResource("3_18o2j")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeHitBox"]
+position = Vector2(12.5, -1)
+shape = SubResource("RectangleShape2D_671kg")
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="Gun"]
-emitting = false
-amount = 10
-process_material = SubResource("ParticleProcessMaterial_pd75g")
-lifetime = 0.1
-one_shot = true
-explosiveness = 1.0
+[connection signal="body_entered" from="MeleeHitBox" to="MeleeHitBox" method="_on_body_entered"]
