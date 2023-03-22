@@ -10,6 +10,8 @@ radius = 8.0
 collision_layer = 4
 collision_mask = 3
 gravity_scale = 0.0
+max_contacts_reported = 1
+contact_monitor = true
 script = ExtResource("1_oa1yg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -19,4 +21,3 @@ shape = SubResource("CircleShape2D_jn38u")
 texture = ExtResource("1_chdqm")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

@@ -3,8 +3,9 @@ extends Node2D
 
 @export var damage: int = 20
 @export var projectile_speed: int = 200
-@onready var _projectile_scene = preload("res://entities/projectiles/bullet/bullet.tscn")
 
+@onready var _projectile_scene = preload("res://entities/projectiles/bullet/bullet.tscn")
+@onready var _particle_sys = $GPUParticles2D
 
 func shoot(aim_direction: Vector2):
 	# Create the projectile and assign its speed and damage
@@ -14,3 +15,4 @@ func shoot(aim_direction: Vector2):
 	projectile.global_position = global_position
 	projectile.apply_central_impulse(aim_direction.normalized() * projectile_speed)
 	projectile.add_collision_exception_with(get_parent())
+	_particle_sys.emitting = true
