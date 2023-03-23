@@ -35,6 +35,9 @@ extends CharacterBody2D
 var _roll_direction = null
 var _is_rolling = false
 
+## Melee parameters
+@export var melee_hitbox_duration: float = 0.3
+
 # Timers
 var _timer_invulnerability = 0
 
@@ -61,10 +64,8 @@ func _input(event):
 			else:
 				return
 			_gun.shoot(projectile_dmg_multiplier, aim_direction.normalized())
-			_anim_tree["parameters/playback"].start("player_shoot")
 		elif event.is_action_pressed("melee"):
 			_melee.melee(melee_dmg_multiplier)
-			_anim_tree["parameters/playback"].start("player_melee")
 
 
 func _physics_process(delta):
@@ -81,7 +82,6 @@ func _physics_process(delta):
 		# Decrease timer
 		_timer_invulnerability -= delta
 		if _timer_invulnerability <= 0:
-			print("remove invuln")
 			set_collision_mask_value(damage_invulnerability_mask, true)
 			_timer_invulnerability = 0
 

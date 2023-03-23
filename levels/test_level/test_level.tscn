@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://b11klinio8k5g"]
+[gd_scene load_steps=12 format=3 uid="uid://b11klinio8k5g"]
 
 [ext_resource type="PackedScene" uid="uid://bf7jajp11fs5c" path="res://entities/player/player.tscn" id="1_0udeo"]
 [ext_resource type="Texture2D" uid="uid://cdg84sbug2ffn" path="res://levels/test_level/texture_01.png" id="1_luv0d"]
@@ -6,6 +6,43 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8r7vg"]
 size = Vector2(50, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ametb"]
+size = Vector2(89, 20)
+
+[sub_resource type="Animation" id="Animation_nbinu"]
+resource_name = "move"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(44, 70), Vector2(0, 70), Vector2(44, 70)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8ymyp"]
+_data = {
+"move": SubResource("Animation_nbinu")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ppspf"]
+animation = &"move"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s24sr"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_vgmnc"]
+states/move/node = SubResource("AnimationNodeAnimation_ppspf")
+states/move/position = Vector2(369, 100)
+transitions = ["Start", "move", SubResource("AnimationNodeStateMachineTransition_s24sr")]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_amsps"]
 
 [node name="test_level" type="Node2D"]
 position = Vector2(883, 424)
@@ -31,3 +68,31 @@ collision_mask = 3
 [node name="Sandbag" parent="." instance=ExtResource("3_bmebs")]
 position = Vector2(69, -4)
 move_speed_multiplier = 1.0
+
+[node name="Sandbag2" parent="." instance=ExtResource("3_bmebs")]
+position = Vector2(72, 31)
+move_speed_multiplier = 1.0
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(19.5807, 70)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(34.5, 0)
+shape = SubResource("RectangleShape2D_ametb")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+position = Vector2(34.5, 0)
+scale = Vector2(0.085, 0.02)
+texture = ExtResource("1_luv0d")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="StaticBody2D"]
+reset_on_save = false
+libraries = {
+"": SubResource("AnimationLibrary_8ymyp")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="StaticBody2D"]
+tree_root = SubResource("AnimationNodeStateMachine_vgmnc")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource("AnimationNodeStateMachinePlayback_amsps")
