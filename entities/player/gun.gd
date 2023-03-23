@@ -31,6 +31,3 @@ func shoot(projectile_dmg_multiplier: float, aim_direction: Vector2):
 	
 	# Trigger a one-shot playthrough of the gunfire particle system
 	_gunfire_particle_sys.emitting = true
-	
-	# Play the shooting animation
-	_anim_tree["parameters/playback"].start("player_shoot")

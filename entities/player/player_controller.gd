@@ -48,24 +48,42 @@ var _timer_invulnerability = 0
 @onready var _anim_tree = $AnimationTree
 @onready var _gun = $Gun
 
+# Monitor whether user is using keyboard or controller
+var _using_controller = false
+
+
+func _get_aim_direction():
+	var aim_direction = null
+	if _using_controller:
+		aim_direction = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
+	else:
+		aim_direction = get_local_mouse_position() - _gun.position
+	return aim_direction.normalized()
 
 func _input(event):
+	# Detect whether using controller or keyboard
+	if event is InputEventKey or event is InputEventMouseButton:
+		_using_controller = false
+	elif event is InputEventJoypadButton or event is InputEventJoypadMotion:
+		_using_controller = true
+	
 	if _can_act:
 		if event.is_action_pressed("interact"):
 			_interact()
 		elif event.is_action_pressed("roll"):
 			_start_roll()
 		elif event.is_action_pressed("shoot"):
-			var aim_direction = null
-			if event is InputEventMouseButton:
-				aim_direction = (get_local_mouse_position() - _gun.position)
-			elif event is InputEventJoypadMotion:
-				aim_direction = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
-			else:
-				return
-			_gun.shoot(projectile_dmg_multiplier, aim_direction.normalized())
+			play_animation_in_direction(_get_aim_direction(), "player_shoot")
+			#print(_gun.position)
+			_gun.shoot(projectile_dmg_multiplier, _get_aim_direction())
 		elif event.is_action_pressed("melee"):
-			_melee.melee(melee_dmg_multiplier)
+			# Modify melee animation to match length of melee
+			var melee_anim = _anim_player.get_animation(
+					get_animation_name_with_direction("player_melee"))
+			melee_anim.length = melee_hitbox_duration
+			play_animation_in_direction(_get_aim_direction(), "player_melee")
+			print(_melee.position)
+			_melee.melee(melee_dmg_multiplier, melee_hitbox_duration)
 
 
 func _physics_process(delta):
@@ -93,6 +111,21 @@ func _move():
 	move_and_slide()
 
 
+func get_animation_name_with_direction(anim_name: String):
+	if _get_aim_direction().x >= 0:
+		return anim_name + "_right"
+	else:
+		return anim_name + "_left"
+
+
+# Plays the given animation in the current aim direction
+func play_animation_in_direction(input_direction: Vector2, anim_name: String):
+	if input_direction.x >= 0:
+		_anim_tree["parameters/playback"].start(anim_name + "_right")
+	else:
+		_anim_tree["parameters/playback"].start(anim_name + "_left")
+
+
 # Interact with the closest nearby interactable
 func _interact():
 	var nearby_interactables = _interactable_range.get_overlapping_bodies()
@@ -118,10 +151,10 @@ func _start_roll():
 		return
 	
 	# Start the roll anim
-	var roll_anim = _anim_player.get_animation("player_roll")
+	var roll_anim = _anim_player.get_animation(get_animation_name_with_direction("player_roll"))
 	roll_anim.length = roll_time_duration
 	roll_anim.track_set_key_time(0, 1, roll_time_duration)
-	_anim_tree["parameters/playback"].start("player_roll")
+	play_animation_in_direction(_roll_direction, "player_roll")
 	
 	# Give invlun for a time
 	add_invuln(roll_invuln_duration)

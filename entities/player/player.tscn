@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bf7jajp11fs5c"]
+[gd_scene load_steps=43 format=3 uid="uid://bf7jajp11fs5c"]
 
 [ext_resource type="Script" path="res://entities/player/player_controller.gd" id="1_k8i8j"]
 [ext_resource type="Texture2D" uid="uid://2xjd6hh508c3" path="res://entities/player/player_roll.png" id="2_rh65h"]
@@ -10,6 +10,226 @@
 [ext_resource type="Texture2D" uid="uid://b2navfypjblua" path="res://entities/player/player_shoot1.png" id="7_4tvtg"]
 [ext_resource type="Script" path="res://entities/player/melee.gd" id="9_l3l72"]
 [ext_resource type="PackedScene" uid="uid://mfsmoaayy8kp" path="res://entities/projectiles/bullet/bullet.tscn" id="9_pl26a"]
+
+[sub_resource type="Animation" id="Animation_4d346"]
+resource_name = "player_idle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("4_janoa"), ExtResource("5_d2kgt")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_klnbn"]
+resource_name = "player_idle_left"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("4_janoa"), ExtResource("5_d2kgt")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_wvv3l"]
+resource_name = "player_melee_left"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_foylo")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeleeHitBox/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-13, 3)]
+}
+
+[sub_resource type="Animation" id="Animation_6dijj"]
+resource_name = "player_roll_left"
+length = 0.55
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -1.0472]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_rh65h")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:flip_h")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_obuj4"]
+resource_name = "player_shoot_left"
+length = 0.1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("6_1h6sl"), ExtResource("7_4tvtg")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Gun:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-11, -1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:flip_h")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_or5cr"]
+resource_name = "player_kick"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerSprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_foylo")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeleeHitBox/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(12.5, -1)]
+}
 
 [sub_resource type="Animation" id="Animation_aats3"]
 resource_name = "player_roll"
@@ -39,22 +259,17 @@ tracks/1/keys = {
 "update": 1,
 "values": [ExtResource("2_rh65h")]
 }
-
-[sub_resource type="Animation" id="Animation_4d346"]
-resource_name = "player_idle"
-length = 2.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerSprite:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerSprite:flip_h")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("4_janoa"), ExtResource("5_d2kgt")]
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_yf8q1"]
@@ -73,70 +288,123 @@ tracks/0/keys = {
 "update": 1,
 "values": [ExtResource("6_1h6sl"), ExtResource("7_4tvtg")]
 }
-
-[sub_resource type="Animation" id="Animation_or5cr"]
-resource_name = "player_kick"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerSprite:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerSprite:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("3_foylo")]
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Gun:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(19, -1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ihbmm"]
 _data = {
-"player_idle": SubResource("Animation_4d346"),
-"player_melee": SubResource("Animation_or5cr"),
-"player_roll": SubResource("Animation_aats3"),
-"player_shoot": SubResource("Animation_yf8q1")
+"player_idle_left": SubResource("Animation_klnbn"),
+"player_idle_right": SubResource("Animation_4d346"),
+"player_melee_left": SubResource("Animation_wvv3l"),
+"player_melee_right": SubResource("Animation_or5cr"),
+"player_roll_left": SubResource("Animation_6dijj"),
+"player_roll_right": SubResource("Animation_aats3"),
+"player_shoot_left": SubResource("Animation_obuj4"),
+"player_shoot_right": SubResource("Animation_yf8q1")
 }
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sogal"]
-animation = &"player_idle"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ts5cw"]
+animation = &"player_idle_left"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_20nbs"]
-animation = &"player_melee"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_d1i41"]
+animation = &"player_idle_right"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_63kjs"]
-animation = &"player_roll"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tok4e"]
+animation = &"player_melee_left"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dp50j"]
-animation = &"player_shoot"
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dqh26"]
+animation = &"player_melee_right"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yjqo2"]
-advance_mode = 2
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kws7j"]
+animation = &"player_roll_left"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_im752"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vh4nn"]
+animation = &"player_roll_right"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lc1tw"]
+animation = &"player_shoot_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0bwa1"]
+animation = &"player_shoot_right"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_an717"]
 switch_mode = 2
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k2xeo"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bwydt"]
 switch_mode = 2
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3nm8w"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xxfp2"]
 switch_mode = 2
 advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rpbhn"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7vbkl"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_53g58"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_eyw84"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_46ifm"]
+advance_mode = 2
+advance_expression = "get_parent()._get_aim_direction().x >= 0"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_spjxv"]
+advance_mode = 2
+advance_expression = "get_parent()._get_aim_direction().x < 0"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_sg77y"]
-states/End/position = Vector2(709, 91)
-states/Start/position = Vector2(195, 85)
-states/player_idle/node = SubResource("AnimationNodeAnimation_sogal")
-states/player_idle/position = Vector2(338, 85)
-states/player_melee/node = SubResource("AnimationNodeAnimation_20nbs")
-states/player_melee/position = Vector2(196, 188)
-states/player_roll/node = SubResource("AnimationNodeAnimation_63kjs")
-states/player_roll/position = Vector2(338, 184)
-states/player_shoot/node = SubResource("AnimationNodeAnimation_dp50j")
-states/player_shoot/position = Vector2(488, 184)
-transitions = ["Start", "player_idle", SubResource("AnimationNodeStateMachineTransition_yjqo2"), "player_roll", "player_idle", SubResource("AnimationNodeStateMachineTransition_im752"), "player_shoot", "player_idle", SubResource("AnimationNodeStateMachineTransition_k2xeo"), "player_melee", "player_idle", SubResource("AnimationNodeStateMachineTransition_3nm8w")]
+states/End/position = Vector2(1164, 85)
+states/Start/position = Vector2(770, -18)
+states/player_idle_left/node = SubResource("AnimationNodeAnimation_ts5cw")
+states/player_idle_left/position = Vector2(375, 57)
+states/player_idle_right/node = SubResource("AnimationNodeAnimation_d1i41")
+states/player_idle_right/position = Vector2(840, 57)
+states/player_melee_left/node = SubResource("AnimationNodeAnimation_tok4e")
+states/player_melee_left/position = Vector2(282, 148)
+states/player_melee_right/node = SubResource("AnimationNodeAnimation_dqh26")
+states/player_melee_right/position = Vector2(747, 148)
+states/player_roll_left/node = SubResource("AnimationNodeAnimation_kws7j")
+states/player_roll_left/position = Vector2(375, 208.286)
+states/player_roll_right/node = SubResource("AnimationNodeAnimation_vh4nn")
+states/player_roll_right/position = Vector2(840, 208.286)
+states/player_shoot_left/node = SubResource("AnimationNodeAnimation_lc1tw")
+states/player_shoot_left/position = Vector2(467, 148)
+states/player_shoot_right/node = SubResource("AnimationNodeAnimation_0bwa1")
+states/player_shoot_right/position = Vector2(945, 148)
+transitions = ["player_melee_left", "player_idle_left", SubResource("AnimationNodeStateMachineTransition_an717"), "player_shoot_left", "player_idle_left", SubResource("AnimationNodeStateMachineTransition_bwydt"), "player_roll_left", "player_idle_left", SubResource("AnimationNodeStateMachineTransition_xxfp2"), "player_melee_right", "player_idle_right", SubResource("AnimationNodeStateMachineTransition_rpbhn"), "player_shoot_right", "player_idle_right", SubResource("AnimationNodeStateMachineTransition_7vbkl"), "player_roll_right", "player_idle_right", SubResource("AnimationNodeStateMachineTransition_53g58"), "Start", "player_idle_right", SubResource("AnimationNodeStateMachineTransition_eyw84"), "player_idle_left", "player_idle_right", SubResource("AnimationNodeStateMachineTransition_46ifm"), "player_idle_right", "player_idle_left", SubResource("AnimationNodeStateMachineTransition_spjxv")]
+graph_offset = Vector2(0, -59.7143)
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_wu6wg"]
 
@@ -155,7 +423,7 @@ size = Vector2(17, 22)
 [sub_resource type="CircleShape2D" id="CircleShape2D_0p5us"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_671kg"]
-size = Vector2(11, 14)
+size = Vector2(10.5, 14)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
@@ -176,10 +444,9 @@ parameters/playback = SubResource("AnimationNodeStateMachinePlayback_wu6wg")
 [node name="PlayerSprite" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(4, -3)
-texture = ExtResource("5_d2kgt")
+texture = ExtResource("4_janoa")
 
 [node name="Gun" type="Node2D" parent="."]
-position = Vector2(19, -1)
 script = ExtResource("3_18o2j")
 _projectile_scene = ExtResource("9_pl26a")
 
@@ -206,13 +473,11 @@ scale = Vector2(4.27999, 3.99621)
 shape = SubResource("CircleShape2D_0p5us")
 
 [node name="MeleeHitBox" type="Area2D" parent="."]
-position = Vector2(-1, 4)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("9_l3l72")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeHitBox"]
-position = Vector2(12.5, -1)
 shape = SubResource("RectangleShape2D_671kg")
 disabled = true
 
