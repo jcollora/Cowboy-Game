@@ -74,7 +74,6 @@ func _input(event):
 			_start_roll()
 		elif event.is_action_pressed("shoot"):
 			play_animation_in_direction(_get_aim_direction(), "player_shoot")
-			#print(_gun.position)
 			_gun.shoot(projectile_dmg_multiplier, _get_aim_direction())
 		elif event.is_action_pressed("melee"):
 			# Modify melee animation to match length of melee
@@ -82,7 +81,6 @@ func _input(event):
 					get_animation_name_with_direction("player_melee"))
 			melee_anim.length = melee_hitbox_duration
 			play_animation_in_direction(_get_aim_direction(), "player_melee")
-			print(_melee.position)
 			_melee.melee(melee_dmg_multiplier, melee_hitbox_duration)
 
 
