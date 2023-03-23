@@ -54,6 +54,10 @@ func shoot():
 
 func auto_reload_if_needed():
 	if _ammo_in_clip <= 0:
-		_player.play_animation_in_direction(_player.get_aim_direction(), "player_reload")
-		_ammo_in_clip = clip_size
-		_player.disable_action(time_to_reload)
+		reload()
+
+
+func reload():
+	_player.play_animation_in_direction(_player.get_aim_direction(), "player_reload")
+	_ammo_in_clip = clip_size
+	_player.disable_action(time_to_reload)

@@ -81,6 +81,8 @@ func _input(event):
 				and not _anim_player.current_animation.begins_with("player_reload"):
 			print("curr anim: ", _anim_player.get_current_animation())
 			play_animation_in_direction(get_aim_direction(), "player_shoot")
+		elif event.is_action_pressed("reload"):
+			_gun.reload()
 		elif event.is_action_pressed("melee"):
 			# Modify melee animation to match length of melee
 			var melee_anim = _anim_player.get_animation(
