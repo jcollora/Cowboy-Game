@@ -4,6 +4,7 @@ extends CharacterBody2D
 
 # Controls whether the player can currently act
 @export var _can_act = true
+@export var _can_move = true
 
 ## The player's base stats. Affects damage, move speed, etc.
 @export_group("Base stats")
@@ -40,6 +41,8 @@ var _is_rolling = false
 
 # Timers
 var _timer_invulnerability = 0
+var _timer_cant_act = 0
+var _timer_cant_move = 0
 
 # Child references
 @onready var _interactable_range = $InteractableRange
@@ -52,7 +55,7 @@ var _timer_invulnerability = 0
 var _using_controller = false
 
 
-func _get_aim_direction():
+func get_aim_direction():
 	var aim_direction = null
 	if _using_controller:
 		aim_direction = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
@@ -72,20 +75,22 @@ func _input(event):
 			_interact()
 		elif event.is_action_pressed("roll"):
 			_start_roll()
-		elif event.is_action_pressed("shoot"):
-			play_animation_in_direction(_get_aim_direction(), "player_shoot")
-			_gun.shoot(projectile_dmg_multiplier, _get_aim_direction())
+		# Only shoot if not already shooting or reloading
+		elif event.is_action_pressed("shoot") \
+				and not _anim_player.current_animation.begins_with("player_shoot") \
+				and not _anim_player.current_animation.begins_with("player_reload"):
+			print("curr anim: ", _anim_player.get_current_animation())
+			play_animation_in_direction(get_aim_direction(), "player_shoot")
 		elif event.is_action_pressed("melee"):
 			# Modify melee animation to match length of melee
 			var melee_anim = _anim_player.get_animation(
 					get_animation_name_with_direction("player_melee"))
 			melee_anim.length = melee_hitbox_duration
-			play_animation_in_direction(_get_aim_direction(), "player_melee")
-			_melee.melee(melee_dmg_multiplier, melee_hitbox_duration)
+			play_animation_in_direction(get_aim_direction(), "player_melee")
 
 
 func _physics_process(delta):
-	if _can_act:
+	if _can_move:
 		_move()
 	
 	if _is_rolling:
@@ -94,12 +99,24 @@ func _physics_process(delta):
 	if _timer_invulnerability > 0:
 		# Make invulnerable
 		set_collision_mask_value(damage_invulnerability_mask, false)
-		
-		# Decrease timer
 		_timer_invulnerability -= delta
 		if _timer_invulnerability <= 0:
 			set_collision_mask_value(damage_invulnerability_mask, true)
 			_timer_invulnerability = 0
+			
+	if _timer_cant_act > 0:
+		_can_act = false
+		_timer_cant_act -= delta
+		if _timer_cant_act <= 0:
+			_can_act = true
+			_timer_cant_act = 0
+	
+	if _timer_cant_move > 0:
+		_can_move = false
+		_timer_cant_move -= delta
+		if _timer_cant_move <= 0:
+			_can_move = true
+			_timer_cant_move = 0
 
 
 # Moves the character in a direction according to input. Acknowledges wall collision.
@@ -110,7 +127,7 @@ func _move():
 
 
 func get_animation_name_with_direction(anim_name: String):
-	if _get_aim_direction().x >= 0:
+	if get_aim_direction().x >= 0:
 		return anim_name + "_right"
 	else:
 		return anim_name + "_left"
@@ -157,12 +174,14 @@ func _start_roll():
 	# Give invlun for a time
 	add_invuln(roll_invuln_duration)
 	
+	# Disable actions and movement during roll
+	disable_action(roll_time_duration)
+	disable_movement(roll_time_duration)
+	
 	# Start the roll movement
 	_is_rolling = true
-	_can_act = false
 	await get_tree().create_timer(roll_time_duration).timeout
 	_is_rolling = false
-	_can_act = true
 
 
 # Roll in the current movement direction, giving invulnerability.
@@ -176,6 +195,18 @@ func add_invuln(duration: float):
 	## If invulnerability overlapping, just extend the duration to the given duration
 	if _timer_invulnerability < duration:
 		_timer_invulnerability = duration
+		
+
+
+func disable_action(duration: float):
+	if _timer_cant_act < duration:
+		_timer_cant_act = duration
+
+
+func disable_movement(duration: float):
+	## If invulnerability overlapping, just extend the duration to the given duration
+	if _timer_cant_move < duration:
+		_timer_cant_move = duration
 
 
 ## Take given damage but subtract by defense

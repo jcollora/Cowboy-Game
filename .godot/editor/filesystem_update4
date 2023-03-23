@@ -1,10 +1,10 @@
 res://default_env.tres
-res://entities/player/player_controller.gd
 res://entities/player/player.tscn
-res://levels/test_level.tscn
 res://levels/test_level/test_level.tscn
 res://entities/projectiles/bullet/bullet.tscn
-res://entities/projectiles/bullet/bullet.gd
-res://entities/player/gun.gd
 res://entities/sandbag/sandbag.tscn
 res://entities/player/melee.gd
+res://entities/player/player_controller.gd
+res://entities/player/gun.gd
+res://entities/interactables/table/table.tscn
+res://entities/player/AnimationPlayer.gd

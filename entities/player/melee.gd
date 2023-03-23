@@ -7,19 +7,15 @@ extends Area2D
 @onready var _anim_player = $"../AnimationPlayer"
 @onready var _anim_tree = $"../AnimationTree"
 @onready var _player = get_parent()
+
 @onready var _hit_players = []
-var _hitbox_active = false
 var _dmg
 
 
 # For a certain time, have enemies take damage from this melee hit box
-func melee(melee_dmg_multiplier: float, melee_hitbox_duration: float):
-	_dmg = base_dmg * melee_dmg_multiplier
+func setup_melee():
+	_dmg = _player.melee_dmg_multiplier * base_dmg
 	_hit_players.clear()
-	
-	_hitbox.disabled = false
-	await get_tree().create_timer(melee_hitbox_duration).timeout
-	_hitbox.disabled = true
 
 
 func _on_body_entered(body):
