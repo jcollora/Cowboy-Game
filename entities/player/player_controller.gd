@@ -58,7 +58,7 @@ func _input(event):
 		elif event.is_action_pressed("shoot"):
 			var aim_direction = null
 			if event is InputEventMouseButton:
-				aim_direction = (get_local_mouse_position() - position)
+				aim_direction = (get_local_mouse_position() - _gun.position)
 			elif event is InputEventJoypadMotion:
 				aim_direction = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
 			else:
